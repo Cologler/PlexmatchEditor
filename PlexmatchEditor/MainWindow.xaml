@@ -1,0 +1,87 @@
+﻿<Window x:Class="PlexmatchEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlexmatchEditor"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:viewmodels="clr-namespace:PlexmatchEditor.ViewModels"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="650"
+        Width="1200">
+    <Grid d:DataContext="{d:DesignInstance Type=viewmodels:WorkspaceViewModel}"
+          Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <HeaderedContentControl Header="Show Year">
+                <TextBox Text="{Binding ShowYear.Value}"
+                         VerticalContentAlignment="Center" />
+            </HeaderedContentControl>
+            
+            <HeaderedContentControl Header="Show Title"
+                                    Grid.Column="1"
+                                    Margin="4,0,0,0">
+                <TextBox Text="{Binding ShowTitle.Value}"
+                         VerticalContentAlignment="Center" />
+            </HeaderedContentControl>
+            
+        </Grid>
+        
+        <ListView Margin="0,4,0,0"
+                  ItemsSource="{Binding MediaFiles}"
+                  Grid.Row="1"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Episode"
+                                        DisplayMemberBinding="{Binding EpisodeText}"/>
+                        
+                        <GridViewColumn Header="Path"
+                                        Width="900"
+                                        DisplayMemberBinding="{Binding Path}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+            <ListView.Resources>
+                <ContextMenu x:Key="ItemContextMenu">
+                    <MenuItem Header="Edit Episode"
+                              Click="EditEpisodeRangeMenuItem_Click" />
+                    <MenuItem Header="Set Episodes">
+                        <MenuItem Header="Continue Previous"
+                                  Click="SetEpisodesContinuePreviousMenuItem_Click"/>
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="ContextMenu"
+                            Value="{StaticResource ItemContextMenu}" />
+                    <Setter Property="IsSelected"
+                            Value="{Binding IsSelected, Mode=OneWayToSource}" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <Grid Grid.Row="2"
+              Margin="0,4,0,0"
+              HorizontalAlignment="Right">
+            <Button Content="Save"
+                    Click="SaveButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>

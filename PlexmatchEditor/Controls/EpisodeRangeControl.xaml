@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="PlexmatchEditor.Controls.EpisodeRangeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PlexmatchEditor.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="140"
+             d:DesignWidth="240">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <HeaderedContentControl Header="Start Season"
+                                Margin="3">
+            <TextBox d:Text="Start Season"
+                     Text="{Binding StartSeason}"/>
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Header="Start Episode"
+                                Grid.Column="1"
+                                Margin="3">
+            <TextBox d:Text="Start Episode"
+                     Text="{Binding StartEpisode}" />
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Header="End Season"
+                                Grid.Row="1"
+                                Margin="3">
+            <TextBox d:Text="End Season"
+                     Text="{Binding EndSeason}" />
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Header="End Episode"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="3">
+            <TextBox d:Text="End Episode"
+                     Text="{Binding EndEpisode}" />
+        </HeaderedContentControl>
+
+    </Grid>
+</UserControl>
