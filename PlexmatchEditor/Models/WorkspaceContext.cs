@@ -1,6 +1,5 @@
 ﻿using System.IO;
 
-using PlexmatchEditor.Extensions;
 using PlexmatchEditor.Plexmatch;
 
 namespace PlexmatchEditor.Models;
@@ -8,7 +7,6 @@ namespace PlexmatchEditor.Models;
 internal class WorkspaceContext(string workspacePath)
 {
     public List<PlexmatchFile> PlexmatchFiles { get; } = [];
-    private Dictionary<string, MediaFileRows> _mapped = [];
 
     /// <summary>
     /// Load all plexmatch files
@@ -16,22 +14,10 @@ internal class WorkspaceContext(string workspacePath)
     /// <returns></returns>
     public async ValueTask LoadAsync()
     {
-        var map = new Dictionary<string, MediaFileRows>(StringComparer.OrdinalIgnoreCase);
         foreach (var item in this.PlexmatchFiles)
         {
             await item.LoadAsync().ConfigureAwait(false);
-            foreach (var row in item.Content!.Rows.OfType<PlexmatchEpisodeRow>())
-            {
-                var key = Path.Join(item.DirectoryRelativePath, row.FileName.Span).ToUnixPath();
-                if (!map.TryGetValue(key, out var value))
-                {
-                    value = new();
-                    map.Add(key, value);
-                }
-                value.AddEpisodeRow(row, item.Content!);
-            }
         }
-        _mapped = map;
     }
 
     public async ValueTask SaveAsync()
@@ -66,7 +52,7 @@ internal class WorkspaceContext(string workspacePath)
         }
     }
 
-    public PlexmatchTitleRow[] GetShowTitleRows() => this.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchTitleRow>()).ToArray();
+    public PlexmatchTitleRow[] GetShowTitleRows() => this.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchTitleRow>()).ToArray();
 
     static IEnumerable<(ReadOnlyMemory<char>, ReadOnlyMemory<char>)> GetPairs(ReadOnlyMemory<char> relativePath)
     {

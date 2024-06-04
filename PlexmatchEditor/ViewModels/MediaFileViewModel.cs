@@ -44,7 +44,7 @@ partial class MediaFileViewModel(FileInfo file, string relativePath, WorkspaceCo
         }
         else
         {
-            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().Content.Rows.Add(
+            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().AddRow(
                 new PlexmatchEpisodeRow
                 { 
                     Episode = newValue.Value,

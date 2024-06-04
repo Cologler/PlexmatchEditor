@@ -14,7 +14,7 @@ partial class ShowTitleViewModel(WorkspaceContext workspaceContext)
     {
         if (_loading) return;
 
-        var titleRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchTitleRow>()).ToArray();
+        var titleRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchTitleRow>()).ToArray();
         if (titleRows.Length > 0)
         {
             foreach (var titleRow in titleRows)
@@ -24,14 +24,13 @@ partial class ShowTitleViewModel(WorkspaceContext workspaceContext)
         }
         else
         {
-            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().Content.Rows
-                .Insert(0, new PlexmatchTitleRow { Title = newValue.AsMemory() });
+            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().InsertRow(0, new PlexmatchTitleRow { Title = newValue.AsMemory() });
         }
     }
 
     public void LoadFromPlexmatch()
     {
-        var titleRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchTitleRow>()).ToArray();
+        var titleRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchTitleRow>()).ToArray();
         _loading = true;
         this.Value = titleRows.Select(x => x.Title).Distinct().FirstOrDefault().ToString();
         _loading = false;

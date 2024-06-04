@@ -18,7 +18,7 @@ partial class ShowYearViewModel(WorkspaceContext workspaceContext)
         if (!int.TryParse(newValue, out var number))
             return;
 
-        var yearRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchYearRow>()).ToArray();
+        var yearRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchYearRow>()).ToArray();
         if (yearRows.Length > 0)
         {
             foreach (var yearRow in yearRows)
@@ -28,14 +28,13 @@ partial class ShowYearViewModel(WorkspaceContext workspaceContext)
         }
         else
         {
-            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().Content.Rows
-                .Insert(0, new PlexmatchYearRow { Year = number });
+            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().InsertRow(0, new PlexmatchYearRow { Year = number });
         }
     }
 
     public void LoadFromPlexmatch()
     {
-        var yearRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchYearRow>()).ToArray();
+        var yearRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchYearRow>()).ToArray();
         var year = yearRows.Select(x => x.Year).Distinct().ToArray();
         if (year.Length > 0)
         {
