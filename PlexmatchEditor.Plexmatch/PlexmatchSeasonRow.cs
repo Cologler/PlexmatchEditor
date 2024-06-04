@@ -5,7 +5,7 @@ public record PlexmatchSeasonRow(int Season) : IPlexmatchRow
     public const string HeaderName = "season";
 
     public void Write(WriteContext writeContext) =>
-        writeContext.To.AppendLine($"{HeaderName}: {this.Season}");
+        writeContext.WriteLine($"{HeaderName}: {this.Season}".AsMemory());
 
     public static IPlexmatchRow? TryParse(ReadOnlyMemory<char> line)
     {

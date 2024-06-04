@@ -3,6 +3,8 @@ using System.IO;
 
 using PlexmatchEditor.Extensions;
 using PlexmatchEditor.Plexmatch;
+using PlexmatchEditor.Plexmatch.Extensions;
+using PlexmatchEditor.ViewModels;
 
 namespace PlexmatchEditor.Models;
 
@@ -28,13 +30,19 @@ internal class PlexmatchFile(FileInfo file, string workspacePath)
         this.Content = content;
     }
 
-    public async ValueTask SaveAsync()
+    public async ValueTask<TextFileContentViewModel> CreateTextFileContentAsync()
     {
         var content = this.Content;
-        var text = await content.DumpAsync(default).ConfigureAwait(false);
-
-        File.WriteAllText(file.FullName, text);
+        var lines = await content.DumpAsLinesAsync().ConfigureAwait(false);
+        var textContent = new TextFileContentViewModel(file.FullName)
+        {
+            FileName = Path.Join(DirectoryRelativePath, Constants.PlexmatchFileName), // windows path style is ok for display
+            Lines = new(lines)
+        };
+        return textContent;
     }
+
+    public async ValueTask SaveAsync() => await (await this.CreateTextFileContentAsync()).WriteFileAsync();
 
     public PlexmatchEpisodeRow[] LookupEpisodeRows(string relativePath)
     {

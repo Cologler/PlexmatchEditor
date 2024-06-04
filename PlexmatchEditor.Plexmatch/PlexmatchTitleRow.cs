@@ -18,7 +18,7 @@ public record PlexmatchTitleRow : IPlexmatchRow
             PlexmatchTitleHeaderStyle.Show => ShowHeaderName,
             _ => throw new NotImplementedException()
         };
-        writeContext.To.Append($"{header}: ").Append(this.Title).AppendLine();
+        writeContext.WriteLine($"{header}: {this.Title}".AsMemory());
     }
 
     public static IPlexmatchRow? TryParse(ReadOnlyMemory<char> line)

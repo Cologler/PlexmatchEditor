@@ -6,7 +6,7 @@ public record PlexmatchYearRow : IPlexmatchRow
 
     public required int Year { get; set; }
 
-    public void Write(WriteContext writeContext) => writeContext.To.Append($"{YearHeaderName}: ").Append(this.Year).AppendLine();
+    public void Write(WriteContext writeContext) => writeContext.WriteLine($"{YearHeaderName}: {this.Year}".AsMemory());
 
     public static IPlexmatchRow? TryParse(ReadOnlyMemory<char> line)
     {

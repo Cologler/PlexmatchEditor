@@ -1,0 +1,59 @@
+﻿<Window x:Class="PlexmatchEditor.Windows.PreviewPlexmatchFilesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:PlexmatchEditor.ViewModels"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+        d:DataContext="{d:DesignInstance Type=viewmodels:PreviewPlexmatchFilesViewModel}"
+        mc:Ignorable="d"
+        Title="Preview Generated"
+        Height="650"
+        Width="900">
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ComboBox ItemsSource="{Binding Files}"
+                  DisplayMemberPath="FileName"
+                  x:Name="FileNameComboBox"
+                  MinWidth="200"
+                  SelectedIndex="0" />
+
+        <ListView ItemsSource="{Binding Lines}"
+                  DataContext="{Binding SelectedItem, ElementName=FileNameComboBox}"
+                  Margin="0,4,0,0"
+                  Grid.Row="1"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <Grid Grid.Row="2"
+              Margin="0,4,0,0"
+              HorizontalAlignment="Right"
+              x:Name="ActionsPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Save"
+                    Click="SaveButton_Click"
+                    MinWidth="80" />
+
+            <Button Content="Save All"
+                    Click="SaveAllButton_Click"
+                    Grid.Column="1"
+                    Margin="4,0,0,0"
+                    MinWidth="80" />
+        </Grid>
+
+    </Grid>
+</Window>

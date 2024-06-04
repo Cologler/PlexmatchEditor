@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace PlexmatchEditor.Plexmatch;
+﻿namespace PlexmatchEditor.Plexmatch;
 
 public class PlexmatchContent
 {
@@ -31,11 +29,11 @@ public class PlexmatchContent
         this.Rows.AddRange(rows);
     }
 
-    public ValueTask<string> DumpAsync(WriteOptions? options = default)
+    public ValueTask DumpAsync(IPlexmatchWriter writer, WriteOptions? options = default)
     {
         var context = new WriteContext
         {
-            To = new StringBuilder(),
+            Writer = writer,
             Options = options ?? new(),
             ScopeSeason = this.Rows.OfType<PlexmatchSeasonRow>().FirstOrDefault()?.Season
         };
@@ -45,6 +43,6 @@ public class PlexmatchContent
             row.Write(context);
         }
 
-        return new(context.To.ToString());
+        return default;
     }
 }

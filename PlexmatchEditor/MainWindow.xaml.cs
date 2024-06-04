@@ -48,7 +48,8 @@ public partial class MainWindow : Window
             var win = new EditEpisodeRangeWindow 
             { 
                 DataContext = ervm,
-                Owner = this
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
             };
             if (win.ShowDialog() == true)
             {
@@ -60,5 +61,21 @@ public partial class MainWindow : Window
     private void SetEpisodesContinuePreviousMenuItem_Click(object sender, RoutedEventArgs e)
     {
         ((WorkspaceViewModel)this.DataContext).SetEpisodesContinuePrevious();
+    }
+
+    private async void PreviewButton_Click(object sender, RoutedEventArgs e)
+    {
+        var contents = await ((WorkspaceViewModel)this.DataContext).GetPlexmatchFilesContentAsync();
+        var pfvm = new PreviewPlexmatchFilesViewModel 
+        { 
+            Files = new(contents) 
+        };
+        var win = new PreviewPlexmatchFilesWindow
+        {
+            DataContext = pfvm,
+            Owner = this,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+        };
+        win.ShowDialog();
     }
 }

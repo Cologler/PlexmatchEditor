@@ -65,6 +65,16 @@ internal partial class WorkspaceViewModel(string workspacePath)
 
     public ValueTask SaveAsync() => this._workspaceContext!.SaveAsync();
 
+    public async ValueTask<TextFileContentViewModel[]> GetPlexmatchFilesContentAsync()
+    {
+        var rv = new List<TextFileContentViewModel>();
+        foreach (var item in this._workspaceContext.PlexmatchFiles)
+        {
+            rv.Add(await item.CreateTextFileContentAsync());
+        }
+        return rv.ToArray();
+    }
+
     public void SetEpisodesContinuePrevious()
     {
         foreach (var item in this.MediaFiles.Where(x => x.IsSelected).ToArray())

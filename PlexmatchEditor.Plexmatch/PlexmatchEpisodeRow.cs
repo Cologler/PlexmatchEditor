@@ -25,7 +25,7 @@ public record PlexmatchEpisodeRow : IPlexmatchRow
             writeContext.Options.PreferEpisodeNumberFormat, 
             writeContext.ScopeSeason);
 
-        writeContext.To.Append($"{header}: {episodeNumber}: ").Append(this.FileName).AppendLine();
+        writeContext.WriteLine($"{header}: {episodeNumber}: {this.FileName}".AsMemory());
     }
 
     public static IPlexmatchRow? TryParse(ReadOnlyMemory<char> line)

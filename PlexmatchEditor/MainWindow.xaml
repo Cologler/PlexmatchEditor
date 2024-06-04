@@ -80,8 +80,20 @@
         <Grid Grid.Row="2"
               Margin="0,4,0,0"
               HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Preview"
+                    Click="PreviewButton_Click" 
+                    MinWidth="80"/>
+
             <Button Content="Save"
-                    Click="SaveButton_Click"/>
+                    Click="SaveButton_Click"
+                    Grid.Column="1"
+                    Margin="4,0,0,0"
+                    MinWidth="80" />
         </Grid>
     </Grid>
 </Window>
