@@ -9,7 +9,7 @@
         xmlns:dd="urn:gong-wpf-dragdrop"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Plexmatch Editor"
         Height="650"
         Width="1200">
     <Grid d:DataContext="{d:DesignInstance Type=viewmodels:WorkspaceViewModel}"
