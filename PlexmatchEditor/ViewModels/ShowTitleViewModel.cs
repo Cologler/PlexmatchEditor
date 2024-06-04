@@ -24,8 +24,8 @@ partial class ShowTitleViewModel(WorkspaceContext workspaceContext)
         }
         else
         {
-            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().Content.Rows.Add(
-                new PlexmatchTitleRow { Title = newValue.AsMemory() });
+            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().Content.Rows
+                .Insert(0, new PlexmatchTitleRow { Title = newValue.AsMemory() });
         }
     }
 

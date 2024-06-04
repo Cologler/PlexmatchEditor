@@ -1,8 +1,10 @@
 ﻿namespace PlexmatchEditor.Plexmatch;
 
-public record PlexmatchSeasonRow(int Season) : IPlexmatchRow
+public record PlexmatchSeasonRow : IPlexmatchRow
 {
     public const string HeaderName = "season";
+
+    public required int Season { get; set; }
 
     public void Write(WriteContext writeContext) =>
         writeContext.WriteLine($"{HeaderName}: {this.Season}".AsMemory());
@@ -15,7 +17,7 @@ public record PlexmatchSeasonRow(int Season) : IPlexmatchRow
             var seasonString = trimedLine[(HeaderName.Length + 1)..].Trim();
             if (int.TryParse(seasonString.Span, out var season))
             {
-                return new PlexmatchSeasonRow(season);
+                return new PlexmatchSeasonRow { Season = season };
             }
         }
         return default;
