@@ -29,9 +29,9 @@ partial class ShowTitleViewModel(WorkspaceContext workspaceContext)
         }
     }
 
-    public void LoadFromPlexmatch(WorkspaceContext plexmatchFiles)
+    public void LoadFromPlexmatch()
     {
-        var titleRows = plexmatchFiles.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchTitleRow>()).ToArray();
+        var titleRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Content!.Rows.OfType<PlexmatchTitleRow>()).ToArray();
         _loading = true;
         this.Value = titleRows.Select(x => x.Title).Distinct().FirstOrDefault().ToString();
         _loading = false;

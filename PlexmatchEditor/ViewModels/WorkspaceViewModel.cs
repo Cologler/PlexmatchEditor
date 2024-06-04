@@ -14,37 +14,31 @@ namespace PlexmatchEditor.ViewModels;
 /// </summary>
 internal partial class WorkspaceViewModel(string workspacePath)
 {
-    private WorkspaceContext? _workspaceContext;
+    private readonly WorkspaceContext _workspaceContext = new(workspacePath);
     [Notify] ObservableCollection<MediaFileViewModel> _mediaFiles = [];
     [Notify] ShowTitleViewModel? _showTitle;
     [Notify] ShowYearViewModel? _showYear;
 
     public async ValueTask ScanFilesAsync()
     {
-        List<FileInfo> mediaFiles = [];
-        List<MediaFileViewModel> mediaFileViewModels = default!;
+        var workspaceContext = this._workspaceContext;
+
+        List<MediaFileViewModel> mediaFiles = [];
         List<PlexmatchFile> plexmatchFiles = [];
-        WorkspaceContext workspaceContext = default!;
 
         await Task.Run(async () =>
         {
             ScanFiles(new DirectoryInfo(workspacePath));
-            workspaceContext = new WorkspaceContext(workspacePath, plexmatchFiles);
             await workspaceContext.LoadAsync().ConfigureAwait(false);
-            mediaFileViewModels = mediaFiles
-                .Select(x =>
-                    new MediaFileViewModel(x, Path.GetRelativePath(workspacePath, x.FullName).ToUnixPath(), workspaceContext))
-                .ToList();
-            foreach (var item in mediaFileViewModels)
+            foreach (var item in mediaFiles)
             {
                 item.LoadFromPlexmatch();
             }
         });
 
-        this._workspaceContext = workspaceContext;
-        this.MediaFiles = new(mediaFileViewModels);
+        this.MediaFiles = new(mediaFiles);
         this.ShowTitle = new(workspaceContext);
-        this.ShowTitle.LoadFromPlexmatch(workspaceContext);
+        this.ShowTitle.LoadFromPlexmatch();
         this.ShowYear = new(workspaceContext);
         this.ShowYear.LoadFromPlexmatch();
 
@@ -57,13 +51,13 @@ internal partial class WorkspaceViewModel(string workspacePath)
                     // dir
                     ScanFiles((DirectoryInfo)item);
                 }
-                else if (item.Name.Equals(".plexmatch", StringComparison.OrdinalIgnoreCase)) // ignore case?
+                else if (Constants.PlexmatchFileName.Equals(item.Name, StringComparison.OrdinalIgnoreCase)) // ignore case?
                 {
-                    plexmatchFiles.Add(new PlexmatchFile((FileInfo)item, workspacePath));
+                    workspaceContext.PlexmatchFiles.Add(new PlexmatchFile((FileInfo)item, workspacePath));
                 }
                 else
                 {
-                    mediaFiles.Add((FileInfo)item);
+                    mediaFiles.Add(new MediaFileViewModel((FileInfo)item, Path.GetRelativePath(workspacePath, item.FullName).ToUnixPath(), workspaceContext));
                 }
             }
         }

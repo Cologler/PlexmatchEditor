@@ -5,11 +5,15 @@ using PlexmatchEditor.Plexmatch;
 
 namespace PlexmatchEditor.Models;
 
-internal class WorkspaceContext(string workspacePath, IEnumerable<PlexmatchFile> plexmatchFiles)
+internal class WorkspaceContext(string workspacePath)
 {
-    public List<PlexmatchFile> PlexmatchFiles { get; } = new(plexmatchFiles);
+    public List<PlexmatchFile> PlexmatchFiles { get; } = [];
     private Dictionary<string, MediaFileRows> _mapped = [];
 
+    /// <summary>
+    /// Load all plexmatch files
+    /// </summary>
+    /// <returns></returns>
     public async ValueTask LoadAsync()
     {
         var map = new Dictionary<string, MediaFileRows>(StringComparer.OrdinalIgnoreCase);
@@ -42,7 +46,7 @@ internal class WorkspaceContext(string workspacePath, IEnumerable<PlexmatchFile>
     {
         if (this.PlexmatchFiles.Count == 0)
         {
-            var newPlexmatchFile = new PlexmatchFile(new FileInfo(Path.Join(workspacePath, ".plexmatch")), workspacePath);
+            var newPlexmatchFile = new PlexmatchFile(new FileInfo(Path.Join(workspacePath, Constants.PlexmatchFileName)), workspacePath);
             this.PlexmatchFiles.Add(newPlexmatchFile);
             return newPlexmatchFile;
         }
