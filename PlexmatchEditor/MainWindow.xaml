@@ -52,7 +52,7 @@
                                         DisplayMemberBinding="{Binding EpisodeText}"/>
                         
                         <GridViewColumn Header="Path"
-                                        Width="900"
+                                        Width="1080"
                                         DisplayMemberBinding="{Binding Path}"/>
                     </GridView.Columns>
                 </GridView>
