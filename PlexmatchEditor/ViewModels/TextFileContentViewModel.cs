@@ -9,7 +9,7 @@ namespace PlexmatchEditor.ViewModels;
 
 partial class TextFileContentViewModel(string filePath)
 {
-    [Notify] private string _fileName = string.Empty;
+    [Notify] private string _displayFileName = string.Empty;
     [Notify] private ObservableCollection<string> _lines = [];
 
     public ValueTask WriteFileAsync()

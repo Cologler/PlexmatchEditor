@@ -12,7 +12,16 @@ internal class PlexmatchFile(FileInfo file, string workspacePath)
     private PlexmatchContent _content = new();
     private Dictionary<string, List<PlexmatchEpisodeRow>>? _cachedEpisodeRows = default;
 
-    public string DirectoryRelativePath { get; } = Path.GetRelativePath(workspacePath, file.Directory!.FullName).ToUnixPath();
+    /// <summary>
+    /// For workspace path, it is string.Empty.
+    /// </summary>
+    public string DirectoryRelativePath { get; } = GetDirectoryRelativePath(workspacePath, file.Directory!.FullName);
+
+    static string GetDirectoryRelativePath(string workspacePath, string directoryPath)
+    {
+        var p = Path.GetRelativePath(workspacePath, directoryPath);
+        return p == "." ? string.Empty : p.ToUnixPath();
+    }
 
     Dictionary<string, List<PlexmatchEpisodeRow>> GetCachedEpisodeRows()
     {
@@ -38,7 +47,7 @@ internal class PlexmatchFile(FileInfo file, string workspacePath)
         var lines = await content.DumpAsLinesAsync().ConfigureAwait(false);
         var textContent = new TextFileContentViewModel(file.FullName)
         {
-            FileName = Path.Join(DirectoryRelativePath, Constants.PlexmatchFileName), // windows path style is ok for display
+            DisplayFileName = Path.Join(DirectoryRelativePath, Constants.PlexmatchFileName), // windows path style is ok for display
             Lines = new(lines)
         };
         return textContent;

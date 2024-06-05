@@ -7,6 +7,9 @@ public record PlexmatchEpisodeRow : IPlexmatchRow
 
     public required PlexmatchEpisodeRange Episode { get; set; }
 
+    /// <summary>
+    /// Must use unix style path.
+    /// </summary>
     public required ReadOnlyMemory<char> FileName { get; set; }
 
     public PlexmatchEpisodeHeaderStyle? HeaderStyle { get; set; }

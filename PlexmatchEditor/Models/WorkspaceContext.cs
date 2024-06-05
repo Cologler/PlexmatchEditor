@@ -41,8 +41,9 @@ internal class WorkspaceContext(string workspacePath)
         }
 
         // from root
-        if (fallbackToRoot &&
-            this.PlexmatchFiles.FirstOrDefault(x => x.DirectoryRelativePath.Equals(".", StringComparison.OrdinalIgnoreCase)) is { } rootfile)
+        if (fallbackToRoot && 
+            reldir != string.Empty &&
+            this.PlexmatchFiles.FirstOrDefault(x => x.DirectoryRelativePath.Equals(string.Empty, StringComparison.OrdinalIgnoreCase)) is { } rootfile)
         {
             return rootfile;
         }
@@ -87,6 +88,6 @@ internal class WorkspaceContext(string workspacePath)
             yield return (relativePath[..index], relativePath[(index + 1)..]);
             end = index;
         }
-        yield return (".".AsMemory(), relativePath);
+        yield return (string.Empty.AsMemory(), relativePath);
     }
 }
