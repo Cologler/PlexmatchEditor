@@ -34,8 +34,7 @@ partial class MediaFileViewModel(FileInfo file, string relativePath, WorkspaceCo
     {
         if (_loading || !newValue.HasValue) return;
 
-        var rows = workspaceContext.GetEpisodeRows(Path).SelectMany(x => x).ToArray();
-        if (rows.Length > 0)
+        if (workspaceContext.GetEpisodeRows(Path).SelectMany(x => x).ToArray() is { Length: > 0 } rows)
         {
             foreach (var row in rows)
             {
@@ -44,11 +43,12 @@ partial class MediaFileViewModel(FileInfo file, string relativePath, WorkspaceCo
         }
         else
         {
-            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().AddRow(
+            var plexmatchFile = workspaceContext.GetOrCreatePlexmatchFileForDirectory(Path, fallbackToRoot: false);
+            plexmatchFile.AddRow(
                 new PlexmatchEpisodeRow
                 { 
                     Episode = newValue.Value,
-                    FileName = this.Path.AsMemory()
+                    FileName = plexmatchFile.GetRelativePath(this.Path).AsMemory()
                 });
         }
     }

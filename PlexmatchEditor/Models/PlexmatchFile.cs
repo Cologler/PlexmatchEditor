@@ -68,4 +68,16 @@ internal class PlexmatchFile(FileInfo file, string workspacePath)
         if (row is PlexmatchEpisodeRow)
             this._cachedEpisodeRows = default;
     }
+
+    /// <summary>
+    /// Get path relative to this file.
+    /// </summary>
+    /// <param name="relativePath"></param>
+    /// <returns></returns>
+    public string GetRelativePath(string relativePath)
+    {
+        ThrowIfNull(relativePath);
+
+        return Path.GetRelativePath(this.DirectoryRelativePath, relativePath).ToUnixPath();
+    }
 }

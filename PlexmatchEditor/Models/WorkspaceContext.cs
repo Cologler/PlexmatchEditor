@@ -28,6 +28,31 @@ internal class WorkspaceContext(string workspacePath)
         }
     }
 
+    public PlexmatchFile GetOrCreatePlexmatchFileForDirectory(string relativePath, bool fallbackToRoot)
+    {
+        ThrowIfNull(relativePath);
+
+        // from dir
+        var reldir = GetPairs(relativePath.AsMemory()).Select(x => x.Item1.ToString()).First();
+        if (reldir is not null &&
+            this.PlexmatchFiles.FirstOrDefault(x => x.DirectoryRelativePath.Equals(reldir, StringComparison.OrdinalIgnoreCase)) is { } file)
+        {
+            return file;
+        }
+
+        // from root
+        if (fallbackToRoot &&
+            this.PlexmatchFiles.FirstOrDefault(x => x.DirectoryRelativePath.Equals(".", StringComparison.OrdinalIgnoreCase)) is { } rootfile)
+        {
+            return rootfile;
+        }
+
+        // create new
+        var newPlexmatchFile = new PlexmatchFile(new FileInfo(Path.Join(workspacePath, reldir, Constants.PlexmatchFileName)), workspacePath);
+        this.PlexmatchFiles.Add(newPlexmatchFile);
+        return newPlexmatchFile;
+    }
+
     public PlexmatchFile GetOrCreateDefaultRootPlexmatchFile()
     {
         if (this.PlexmatchFiles.Count == 0)
