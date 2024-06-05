@@ -36,5 +36,8 @@ namespace PlexmatchEditor.Windows
 
             this.DialogResult = true;
         }
+
+        private void RemoveSelectedMenuItem_Click(object sender, RoutedEventArgs e) => 
+            ((TextFileContentViewModel)this.FileNameComboBox.SelectedItem).RemoveSelected();
     }
 }

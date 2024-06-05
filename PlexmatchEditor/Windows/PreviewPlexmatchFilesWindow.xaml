@@ -25,12 +25,23 @@
 
         <ListView ItemsSource="{Binding Lines}"
                   DataContext="{Binding SelectedItem, ElementName=FileNameComboBox}"
+                  DisplayMemberPath="Content"
                   Margin="0,4,0,0"
                   Grid.Row="1"
                   dd:DragDrop.IsDragSource="True"
                   dd:DragDrop.IsDropTarget="True">
+            <ListView.Resources>
+                <ContextMenu x:Key="ListViewItemContextMenu">
+                    <MenuItem Header="Remove"
+                              Click="RemoveSelectedMenuItem_Click"/>
+                </ContextMenu>
+            </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="ContextMenu"
+                            Value="{StaticResource ListViewItemContextMenu}" />
+                    <Setter Property="IsSelected"
+                            Value="{Binding IsSelected, Mode=OneWayToSource}" />
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

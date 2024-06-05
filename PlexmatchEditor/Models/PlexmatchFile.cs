@@ -48,7 +48,7 @@ internal class PlexmatchFile(FileInfo file, string workspacePath)
         var textContent = new TextFileContentViewModel(file.FullName)
         {
             DisplayFileName = Path.Join(DirectoryRelativePath, Constants.PlexmatchFileName), // windows path style is ok for display
-            Lines = new(lines)
+            Lines = new(lines.Select(x => new TextFileContentViewModel.Line { Content = x }))
         };
         return textContent;
     }
