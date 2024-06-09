@@ -36,7 +36,13 @@ internal partial class WorkspaceViewModel(string workspacePath)
             }
         });
 
-        this.MediaFiles = new(mediaFiles);
+        this.MediaFiles = new(mediaFiles.OrderBy(x => x.Episode?.Start ??
+            new PlexmatchEpisodeIndex
+            {
+                Season = int.MaxValue,
+                Episode = int.MaxValue
+            }));
+
         this.ShowTitle = new(workspaceContext);
         this.ShowTitle.LoadFromPlexmatch();
         this.ShowYear = new(workspaceContext);
