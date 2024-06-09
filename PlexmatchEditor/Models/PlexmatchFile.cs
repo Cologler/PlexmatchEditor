@@ -87,6 +87,11 @@ internal class PlexmatchFile(FileInfo file, string workspacePath)
     {
         ThrowIfNull(relativePath);
 
+        if (this.DirectoryRelativePath == string.Empty)
+        {
+            return relativePath;
+        }
+
         return Path.GetRelativePath(this.DirectoryRelativePath, relativePath).ToUnixPath();
     }
 }
