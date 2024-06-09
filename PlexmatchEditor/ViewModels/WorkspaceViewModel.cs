@@ -94,4 +94,19 @@ internal partial class WorkspaceViewModel(string workspacePath)
             }
         }
     }
+
+    public void SetEpisodesToEpisode01()
+    {
+        foreach (var item in this.MediaFiles.Where(x => x.IsSelected).ToArray())
+        {
+            item.Episode = new PlexmatchEpisodeRange
+            {
+                Start = new PlexmatchEpisodeIndex
+                {
+                    Season = item.Episode?.Start.Season ?? 1,
+                    Episode = 1
+                }
+            };
+        }
+    }
 }

@@ -58,10 +58,11 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SetEpisodesContinuePreviousMenuItem_Click(object sender, RoutedEventArgs e)
-    {
+    private void SetEpisodesContinuePreviousMenuItem_Click(object sender, RoutedEventArgs e) =>
         ((WorkspaceViewModel)this.DataContext).SetEpisodesContinuePrevious();
-    }
+
+    private void SetEpisodesToEpisode01MenuItem_Click(object sender, RoutedEventArgs e) =>
+        ((WorkspaceViewModel)this.DataContext).SetEpisodesToEpisode01();
 
     private async void PreviewButton_Click(object sender, RoutedEventArgs e)
     {
