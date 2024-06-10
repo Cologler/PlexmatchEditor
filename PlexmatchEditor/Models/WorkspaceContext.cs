@@ -54,15 +54,21 @@ internal class WorkspaceContext(string workspacePath)
         return newPlexmatchFile;
     }
 
-    public PlexmatchFile GetOrCreateDefaultRootPlexmatchFile()
+    public PlexmatchFile GetOrCreatePlexmatchFileForShow()
     {
-        if (this.PlexmatchFiles.Count == 0)
+        if (this.PlexmatchFiles.Count == 1)
         {
-            var newPlexmatchFile = new PlexmatchFile(new FileInfo(Path.Join(workspacePath, Constants.PlexmatchFileName)), workspacePath);
-            this.PlexmatchFiles.Add(newPlexmatchFile);
-            return newPlexmatchFile;
+            return this.PlexmatchFiles[0];
         }
-        return this.PlexmatchFiles.First();
+
+        if (this.PlexmatchFiles.FirstOrDefault(x => x.DirectoryRelativePath == string.Empty) is { } root)
+        {
+            return root;
+        }
+
+        var newPlexmatchFile = new PlexmatchFile(new FileInfo(Path.Join(workspacePath, Constants.PlexmatchFileName)), workspacePath);
+        this.PlexmatchFiles.Add(newPlexmatchFile);
+        return newPlexmatchFile;
     }
 
     public IEnumerable<PlexmatchEpisodeRow[]> GetEpisodeRows(string relativePath)

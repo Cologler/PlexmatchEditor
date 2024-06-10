@@ -28,7 +28,7 @@ partial class ShowYearViewModel(WorkspaceContext workspaceContext)
         }
         else
         {
-            workspaceContext.GetOrCreateDefaultRootPlexmatchFile().InsertRow(0, new PlexmatchYearRow { Year = number });
+            workspaceContext.GetOrCreatePlexmatchFileForShow().InsertRow(0, new PlexmatchYearRow { Year = number });
         }
     }
 
