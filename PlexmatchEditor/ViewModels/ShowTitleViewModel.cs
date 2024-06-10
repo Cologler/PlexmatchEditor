@@ -1,4 +1,6 @@
-﻿using PlexmatchEditor.Models;
+﻿using System.Collections.ObjectModel;
+
+using PlexmatchEditor.Models;
 using PlexmatchEditor.Plexmatch;
 
 using PropertyChanged.SourceGenerator;
@@ -7,8 +9,9 @@ namespace PlexmatchEditor.ViewModels;
 
 partial class ShowTitleViewModel(WorkspaceContext workspaceContext)
 {
-    bool _loading;
-    [Notify] string _value = string.Empty;
+    private bool _loading;
+    [Notify] private string _value = string.Empty;
+    [Notify] private ObservableCollection<string> _optionsValues = [];
 
     private void OnValueChanged(string _, string newValue)
     {
@@ -31,8 +34,10 @@ partial class ShowTitleViewModel(WorkspaceContext workspaceContext)
     public void LoadFromPlexmatch()
     {
         var titleRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchTitleRow>()).ToArray();
+        var titles = titleRows.Select(x => x.Title).Select(x => x.ToString()).Distinct().ToArray();
         _loading = true;
-        this.Value = titleRows.Select(x => x.Title).Distinct().FirstOrDefault().ToString();
+        this.Value = titles.FirstOrDefault(string.Empty);
+        this.OptionsValues = new(titles);
         _loading = false;
     }
 }

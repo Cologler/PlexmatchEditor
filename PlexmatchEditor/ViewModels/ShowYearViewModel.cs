@@ -1,4 +1,6 @@
-﻿using PlexmatchEditor.Models;
+﻿using System.Collections.ObjectModel;
+
+using PlexmatchEditor.Models;
 using PlexmatchEditor.Plexmatch;
 
 using PropertyChanged.SourceGenerator;
@@ -9,6 +11,7 @@ partial class ShowYearViewModel(WorkspaceContext workspaceContext)
 {
     bool _loading;
     [Notify] private string _value = string.Empty;
+    [Notify] private ObservableCollection<string> _optionsValues = [];
 
     private void OnValueChanged(string _, string newValue)
     {
@@ -35,11 +38,12 @@ partial class ShowYearViewModel(WorkspaceContext workspaceContext)
     public void LoadFromPlexmatch()
     {
         var yearRows = workspaceContext.PlexmatchFiles.SelectMany(x => x.Rows<PlexmatchYearRow>()).ToArray();
-        var year = yearRows.Select(x => x.Year).Distinct().ToArray();
-        if (year.Length > 0)
+        var years = yearRows.Select(x => x.Year).Distinct().ToArray();
+        if (years.Length > 0)
         {
             _loading = true;
-            this.Value = year[0].ToString();
+            this.OptionsValues = new(years.Select(x => x.ToString()));
+            this.Value = years[0].ToString();
             _loading = false;
         }
     }

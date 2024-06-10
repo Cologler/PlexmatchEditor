@@ -27,15 +27,19 @@
             </Grid.ColumnDefinitions>
 
             <HeaderedContentControl Header="Show Year">
-                <TextBox Text="{Binding ShowYear.Value}"
-                         VerticalContentAlignment="Center" />
+                <ComboBox ItemsSource="{Binding ShowYear.OptionsValues}"
+                          Text="{Binding ShowYear.Value, Mode=TwoWay}"
+                          HorizontalAlignment="Stretch"
+                          IsEditable="True"/>
             </HeaderedContentControl>
             
             <HeaderedContentControl Header="Show Title"
                                     Grid.Column="1"
                                     Margin="4,0,0,0">
-                <TextBox Text="{Binding ShowTitle.Value}"
-                         VerticalContentAlignment="Center" />
+                <ComboBox ItemsSource="{Binding ShowTitle.OptionsValues}"
+                          Text="{Binding ShowTitle.Value, Mode=TwoWay}"
+                          HorizontalAlignment="Stretch"
+                          IsEditable="True" />
             </HeaderedContentControl>
             
         </Grid>
