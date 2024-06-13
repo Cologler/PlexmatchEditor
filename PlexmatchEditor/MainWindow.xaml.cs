@@ -64,6 +64,9 @@ public partial class MainWindow : Window
     private void SetEpisodesToEpisode01MenuItem_Click(object sender, RoutedEventArgs e) =>
         ((WorkspaceViewModel)this.DataContext).SetEpisodesToEpisode01();
 
+    private void SetEpisodesTryDetectEpisodesMenuItem_Click(object sender, RoutedEventArgs e) =>
+        ((WorkspaceViewModel)this.DataContext).SetEpisodesTryDetectEpisodes();
+
     private async void PreviewButton_Click(object sender, RoutedEventArgs e)
     {
         var contents = await ((WorkspaceViewModel)this.DataContext).GetPlexmatchFilesContentAsync();

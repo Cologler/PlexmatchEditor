@@ -4,6 +4,7 @@ using System.IO;
 using PlexmatchEditor.Extensions;
 using PlexmatchEditor.Models;
 using PlexmatchEditor.Plexmatch;
+using PlexmatchEditor.Utilities;
 
 using PropertyChanged.SourceGenerator;
 
@@ -79,6 +80,20 @@ internal partial class WorkspaceViewModel(string workspacePath)
             rv.Add(await item.CreateTextFileContentAsync());
         }
         return rv.ToArray();
+    }
+
+    public void SetEpisodesTryDetectEpisodes()
+    {
+        foreach (var item in this.MediaFiles.Where(x => x.IsSelected).ToArray())
+        {
+            if (EpisodeDetector.TryDetect(Path.GetFileNameWithoutExtension(item.Path)) is { } er)
+            {
+                item.Episode = er with
+                {
+                    EpisodeNumberFormat = item.Episode?.EpisodeNumberFormat
+                };
+            }
+        }
     }
 
     public void SetEpisodesContinuePrevious()

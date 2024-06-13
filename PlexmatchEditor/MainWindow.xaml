@@ -70,6 +70,8 @@
                                   Click="SetEpisodesContinuePreviousMenuItem_Click"/>
                         <MenuItem Header="To Episode 1"
                                   Click="SetEpisodesToEpisode01MenuItem_Click" />
+                        <MenuItem Header="Try Detect Episodes"
+                                  Click="SetEpisodesTryDetectEpisodesMenuItem_Click" />
                     </MenuItem>
                 </ContextMenu>
             </ListView.Resources>
